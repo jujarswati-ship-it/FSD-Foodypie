@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Foodie Hub - Veg Products</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f5ff;
+            color: #333;
+        }
+
+        /* Navbar */
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            color: #764ba2;
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        nav div {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #764ba2;
+        }
+
+        .register-btn {
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color: white;
+            padding: 11px 18px;
+            border-radius: 7px;
+        }
+
+        .register-btn:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Heading */
+
+        .heading {
+            text-align: center;
+            padding: 55px 20px;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color: white;
+        }
+
+        .heading h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .heading p {
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        /* Messages */
+
+        .messages {
+            max-width: 1100px;
+            margin: 20px auto 0;
+            padding: 0 20px;
+        }
+
+        .message {
+            background: #eee9ff;
+            color: #764ba2;
+            padding: 13px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Products */
+
+        .products {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 28px;
+            padding: 50px 25px;
+        }
+
+        .product-card {
+            background: white;
+            width: 270px;
+            padding: 16px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-7px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product-card h2 {
+            color: #764ba2;
+            font-size: 21px;
+            margin: 15px 0 8px;
+        }
+
+        .category {
+            display: inline-block;
+            background: #eee9ff;
+            color: #764ba2;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .product-card p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 14px;
+            min-height: 45px;
+        }
+
+        .price {
+            color: #667eea;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        /* Buttons */
+
+        .btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #55318b;
+            transform: translateY(-2px);
+        }
+
+        .empty {
+            width: 100%;
+            text-align: center;
+            padding: 60px 20px;
+            color: #764ba2;
+            font-size: 20px;
+        }
+
+        /* Footer */
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 22px;
+            margin-top: 30px;
+        }
+
+        /* Responsive */
+
+        @media(max-width:600px) {
+
+            nav {
+                justify-content: center;
+                text-align: center;
+            }
+
+            nav div {
+                justify-content: center;
+                gap: 13px;
+            }
+
+            nav a {
+                font-size: 13px;
+            }
+
+            .heading h1 {
+                font-size: 28px;
+            }
+
+            .product-card {
+                width: 100%;
+                max-width: 350px;
+            }
+
+            .products {
+                padding: 30px 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav>
+
+        <h2 class="logo">🥗 Foodie Hub</h2>
+
+        <div>
+
+            <a href="{% url 'home' %}">Home</a>
+
+            <a href="{% url 'products' %}">Products</a>
+
+            <a href="{% url 'order' %}">🛒 My Cart</a>
+
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+
+                <form method="POST"
+                      action="{% url 'logout' %}"
+                      style="display:inline;">
+
+                    {% csrf_token %}
+
+                    <button type="submit"
+                            style="border:none;background:none;color:#764ba2;font-weight:600;cursor:pointer;">
+
+                        Logout
+
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <a href="{% url 'login' %}">Login</a>
+
+                <a href="{% url 'register' %}" class="register-btn">
+                    Register
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </nav>
+
+
+    <!-- Heading -->
+
+    <section class="heading">
+
+        <h1>Our Delicious Veg Menu 🥗</h1>
+
+        <p>
+            Fresh ingredients, amazing flavours and
+            delicious vegetarian food!
+        </p>
+
+    </section>
+
+
+    <!-- Django Messages -->
+
+    {% if messages %}
+
+        <div class="messages">
+
+            {% for message in messages %}
+
+                <div class="message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- Products -->
+
+    <section class="products">
+
+        {% for product in products %}
+
+            <div class="product-card">
+
+                <img
+                    src="{{ product.image }}"
+                    alt="{{ product.name }}"
+                    loading="lazy"
+                >
+
+                <h2>{{ product.name }}</h2>
+
+                <span class="category">
+                    {{ product.category }}
+                </span>
+
+                <p>
+                    {{ product.description }}
+                </p>
+
+                <div class="price">
+                    ₹{{ product.price }}
+                </div>
+
+                <!-- Add to Cart -->
+
+                <form method="POST"
+                      action="{% url 'add_to_cart' product.id %}">
+
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn">
+                        🛒 Add to Cart
+                    </button>
+
+                </form>
+
+            </div>
+
+        {% empty %}
+
+            <div class="empty">
+
+                <h2>🥗 No Products Available!</h2>
+
+                <p>
+                    Please check back later for delicious vegetarian food.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </section>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <p>
+            © 2026 🥗Foodypie. All Rights Reserved. ❤️
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

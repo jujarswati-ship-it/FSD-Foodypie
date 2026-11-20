@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Foodie Hub - My Cart</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background: #f7f7fc;
+    color: #333;
+}
+
+/* Navbar */
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 8%;
+    background: white;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo {
+    color: #764ba2;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+nav div {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #444;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #764ba2;
+}
+
+/* Hero Section */
+
+.heading {
+    background: linear-gradient(120deg,#667eea,#764ba2);
+    text-align: center;
+    color: white;
+    padding: 65px 20px;
+}
+
+.heading h1 {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.heading p {
+    font-size: 16px;
+    opacity: 0.95;
+}
+
+/* Main Container */
+
+.container {
+    max-width: 1150px;
+    margin: 45px auto;
+    padding: 0 20px;
+}
+
+.cart-title {
+    color: #333;
+    font-size: 27px;
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+.cart-title span {
+    color: #764ba2;
+}
+
+/* Cart Layout */
+
+.cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 28px;
+    align-items: start;
+}
+
+/* Cart Items */
+
+.cart-items {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 22px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item:first-child {
+    padding-top: 0;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.food-image {
+    width: 145px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 14px;
+    background: #f1f1f1;
+    flex-shrink: 0;
+}
+
+.food-details {
+    flex: 1;
+}
+
+.food-details h3 {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.food-details p {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.food-price {
+    color: #764ba2 !important;
+    font-size: 17px !important;
+    font-weight: 700;
+}
+
+/* Quantity Controls */
+
+.quantity-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.quantity-input {
+    width: 70px;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 15px;
+}
+
+.quantity-input:focus {
+    border-color: #764ba2;
+    box-shadow: 0 0 5px rgba(118,75,162,0.2);
+}
+
+.update-btn {
+    padding: 10px 18px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.update-btn:hover {
+    background: #55318b;
+    transform: translateY(-2px);
+}
+
+.remove-btn {
+    margin-top: 10px;
+    padding: 9px 14px;
+    background: #fff0f0;
+    color: #e63946;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.remove-btn:hover {
+    background: #e63946;
+    color: white;
+}
+
+/* Order Summary */
+
+.summary {
+    background: white;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 20px;
+}
+
+.summary h2 {
+    color: #764ba2;
+    font-size: 23px;
+    margin-bottom: 25px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    color: #777;
+    font-size: 15px;
+}
+
+.summary-divider {
+    border: none;
+    border-top: 1px dashed #ddd;
+    margin: 22px 0;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    color: #764ba2;
+    font-size: 21px;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+/* Checkout Button */
+
+.checkout-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(120deg,#667eea,#764ba2);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+    text-decoration: none;
+}
+
+.checkout-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(118,75,162,0.3);
+}
+
+.continue-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #764ba2;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.continue-link:hover {
+    color: #55318b;
+}
+
+.delivery-note {
+    background: #f5f2ff;
+    padding: 13px;
+    border-radius: 9px;
+    margin-top: 20px;
+    color: #764ba2;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* Empty Cart */
+
+.empty-cart {
+    background: white;
+    padding: 75px 20px;
+    text-align: center;
+    border-radius: 18px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+}
+
+.empty-cart .emoji {
+    font-size: 75px;
+    margin-bottom: 20px;
+}
+
+.empty-cart h2 {
+    color: #764ba2;
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+
+.empty-cart p {
+    color: #888;
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+.shop-btn {
+    display: inline-block;
+    padding: 14px 28px;
+    color: white;
+    background: linear-gradient(120deg,#667eea,#764ba2);
+    text-decoration: none;
+    border-radius: 9px;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.shop-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(118,75,162,0.3);
+}
+
+/* Footer */
+
+footer {
+    background: #292638;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    margin-top: 65px;
+    font-size: 14px;
+}
+
+/* Responsive */
+
+@media(max-width: 850px) {
+
+    .cart-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .summary {
+        position: static;
+    }
+
+}
+
+@media(max-width: 550px) {
+
+    nav {
+        justify-content: center;
+        padding: 18px;
+    }
+
+    nav div {
+        gap: 17px;
+    }
+
+    nav a {
+        font-size: 13px;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .heading {
+        padding: 45px 15px;
+    }
+
+    .heading h1 {
+        font-size: 27px;
+    }
+
+    .container {
+        padding: 0 12px;
+        margin: 30px auto;
+    }
+
+    .cart-title {
+        font-size: 22px;
+    }
+
+    .cart-items {
+        padding: 15px;
+    }
+
+    .cart-item {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .food-image {
+        width: 95px;
+        height: 100px;
+    }
+
+    .food-details h3 {
+        font-size: 16px;
+    }
+
+    .food-details p {
+        font-size: 12px;
+    }
+
+    .food-price {
+        font-size: 15px !important;
+    }
+
+    .quantity-form {
+        gap: 6px;
+    }
+
+    .quantity-input {
+        width: 55px;
+        padding: 8px;
+    }
+
+    .update-btn {
+        padding: 8px 11px;
+        font-size: 12px;
+    }
+
+    .remove-btn {
+        font-size: 11px;
+        padding: 8px 10px;
+    }
+
+    .summary {
+        padding: 20px;
+    }
+
+    .empty-cart {
+        padding: 50px 15px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<nav>
+
+    <h2 class="logo">🥗 Foodie Hub</h2>
+
+    <div>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'products' %}">Products</a>
+        <a href="{% url 'order' %}">🛒 My Cart</a>
+    </div>
+
+</nav>
+
+<!-- Hero Section -->
+
+<section class="heading">
+
+    <h1>🛒 My Shopping Cart</h1>
+
+    <p>Your favourite vegetarian food is waiting for you!</p>
+
+</section>
+
+<!-- Main Content -->
+
+<div class="container">
+
+    <h2 class="cart-title">
+        Your <span>Selected Items</span>
+    </h2>
+
+    {% if order_items %}
+
+    <div class="cart-layout">
+
+        <!-- Cart Products -->
+
+        <div class="cart-items">
+
+            {% for item in order_items %}
+
+            <div class="cart-item">
+
+                <img class="food-image"
+                     src="{{ item.product.image }}"
+                     alt="{{ item.product.name }}">
+
+                <div class="food-details">
+
+                    <h3>{{ item.product.name }}</h3>
+
+                    <p>{{ item.product.category }}</p>
+
+                    <p class="food-price">
+                        ₹{{ item.product.price }}
+                    </p>
+
+                    <!-- Update Quantity -->
+
+                    <form method="POST"
+                          action="{% url 'update_cart' item.product.id %}"
+                          class="quantity-form">
+
+                        {% csrf_token %}
+
+                        <input type="hidden"
+                               name="action"
+                               value="update">
+
+                        <input type="number"
+                               name="quantity"
+                               value="{{ item.quantity }}"
+                               min="1"
+                               max="99"
+                               class="quantity-input"
+                               required>
+
+                        <button type="submit" class="update-btn">
+                            Update
+                        </button>
+
+                    </form>
+
+                    <p class="food-price" style="margin-top:12px;">
+                        Subtotal: ₹{{ item.subtotal|floatformat:2 }}
+                    </p>
+
+                    <!-- Remove Item -->
+
+                    <form method="POST"
+                          action="{% url 'update_cart' item.product.id %}">
+
+                        {% csrf_token %}
+
+                        <input type="hidden"
+                               name="action"
+                               value="remove">
+
+                        <button type="submit" class="remove-btn">
+                            🗑 Remove Item
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- Order Summary -->
+
+        <div class="summary">
+
+            <h2>🧾 Order Summary</h2>
+
+            <div class="summary-row">
+                <span>Total Items</span>
+                <span>{{ order_items|length }}</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Delivery Charges</span>
+                <span style="color:green;font-weight:bold;">
+                    FREE
+                </span>
+            </div>
+
+            <hr class="summary-divider">
+
+            <div class="total-row">
+                <span>Total</span>
+                <span>₹{{ total|floatformat:2 }}</span>
+            </div>
+
+            <!-- Working Checkout Link -->
+
+            <a href="{% url 'checkout' %}" class="checkout-btn">
+    Proceed to Checkout →
+</a>
+
+            <a href="{% url 'products' %}" class="continue-link">
+                ← Continue Shopping
+            </a>
+
+            <div class="delivery-note">
+                🚚 Free delivery on your order!
+            </div>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <!-- Empty Cart -->
+
+    <div class="empty-cart">
+
+        <div class="emoji">🥗</div>
+
+        <h2>Your Cart is Empty!</h2>
+
+        <p>
+            You haven't added any delicious food yet.<br>
+            Explore our menu and choose your favourites!
+        </p>
+
+        <a href="{% url 'products' %}" class="shop-btn">
+            Explore Veg Menu 🍽️
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+<!-- Footer -->
+
+<footer>
+
+    <p>© 2026 Foodie Hub. All Rights Reserved. ❤️</p>
+
+</footer>
+
+</body>
+</html>
